@@ -7,7 +7,8 @@ window.registeredcommands=[
 	"fortune",
 	"credits",
 	"wantyougone",
-	"opensource"
+	"opensource",
+	"killcrt"
 ]
 
 window.shortcuts={
@@ -24,8 +25,7 @@ window.consolerunning=false;
 window.userinput="";
 
 //Removing the forcelinebreak-div will freeze hell and make the dead walk the earth. You want that? No, you don't. So don't fucking remove this.
-window.consolecontent="<div id=forcelinebreak></div>\
-GLaDOS v1.09 (c) 1982 Aperture Science, Inc<br>\
+window.consolecontent="GLaDOS v1.09 (c) 1982 Aperture Science, Inc<br>\
 ";
 window.cursorpos=0;
 window.consoleurl="<br>Lutan@GLaDOS:~$ ";
@@ -139,19 +139,20 @@ function moveCursorRight() {
 
 function updateConsole() {
 	if (window.consolerunning) {
-		$("#console_primary_content").html(window.consolecontent+"<div id=forcelinebreak></div><span id=userinput><span>&nbsp;</span></span>");
+		$("#console_primary_content").html("<div id=forcelinebreak></div>"+window.consolecontent+"<span id=userinput><span>&nbsp;</span></span>");
 		$("#userinput > span").removeClass("mark");
 		$("#userinput > span:last-child").addClass("mark");
 	} else {
-		$("#console_primary_content").html(window.consolecontent+window.consoleurl+"<div id=forcelinebreak></div><span id=userinput>"+spanify(window.userinput)+"<span>&nbsp;</span></span>");
+		$("#console_primary_content").html("<div id=forcelinebreak></div>"+window.consolecontent+window.consoleurl+"<div id=forcelinebreak></div><span id=userinput>"+spanify(window.userinput)+"<span>&nbsp;</span></span>");
 		$("#userinput > span").removeClass("mark");
 		$("#userinput > span:nth-child("+(window.cursorpos+1)+")").addClass("mark");
 	}
 }
 
 function runCommand(command) {
+	command=command.trim();
 	if (command=="") {
-		window.consolecontent+=window.consoleurl+"<br>";
+		window.consolecontent+=window.consoleurl;
 		return;
 	}
 	

@@ -5,6 +5,7 @@ function help(argv) {
 		println("reddit      [r] - Browse Reddit");
 		println("4chan       [4] - Browse 4chan");
 		println("google      [g] - Search on Google");
+		println("killcrt         - Removes the CRT Lines. To undo it, press F5");
 		println("wantyougone     - It's always such a pleasure.");
 		println("credits         - Prints the credits");
 		println("exit            - Exit");
@@ -42,6 +43,10 @@ function help(argv) {
 			throwerror();
 			break;
 	}
+}
+
+function killcrt() {
+	$("#scanlines").remove();
 }
 
 function opensource() {
