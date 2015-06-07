@@ -25,30 +25,9 @@ $(function() {
 	}
 	$("#systems").html(systemsdevices);
 	setInterval(function() {
-		var i=0;
-		while (i<window.systems.length) {
-			test="ayy";
-			test2="ayy lmao";
-			request=$.get(window.systems[i][1]);
-			request.done(function(data) {
-				time=new Date().getTime() / 1000;
-				difference = time - data;
-				console.log(test);
-				console.log(test2);
-				if (difference < 20) {
-					$("#"+window.systems[i][0]).removeClass("down");
-					$("#"+window.systems[i][0]).addClass("up");
-				} else {
-					$("#"+window.systems[i][0]).removeClass("up");
-					$("#"+window.systems[i][0]).addClass("down");
-				}
-			});
-			request.fail(function() {
-				console.log("fail");
-			});
-			i++;
-		}
+		updateSystems();
 	},10000);
+	updateSystems();
 });
 
 setInterval(function() {
@@ -73,6 +52,31 @@ setInterval(function() {
 		window.cursorstate=true;
 	}
 },350);
+
+function updateSystems() {
+	var i=0;
+	while (i<window.systems.length) {
+		request=$.getJSON(window.systems[i][1]);
+		request.done(function(data) {
+			console.log(data);
+			time=new Date().getTime() / 1000;
+			difference = time - data[1];
+			console.log(difference);
+			if (difference < 60) {
+				$("#"+data[0]).removeClass("down");
+				$("#"+data[0]).addClass("up");
+			} else {
+				$("#"+data[0]).removeClass("up");
+				$("#"+data[0]).addClass("down");
+			}
+		});
+		request.fail(function() {
+			console.log("Failed to load systems status.");
+		});
+		i++;
+	}
+}
+
 function updateBlocks() {
 	request=$.get("http://www.bloxapi.com/index.php?action=blockModule&subaction=readBlock&strKey=YM17fqok3rdBeQfPD1F1CzqB0jqS3hPO");
 	request.done(function(data) {

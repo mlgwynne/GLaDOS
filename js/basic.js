@@ -45,7 +45,10 @@ function help(argv) {
 }
 
 function opensource() {
-	println("This project is available at Github."
+	println('<a href="http://github.com/Lutron/GLaDOS" target=_blank">This project is available at Github.</a>');
+	println('Remember, the Aperture Science Bring Your Daughter to Work Day is the perfect time to have her tested.');
+	println();
+	println('Feel free to write your own programs for this console. It\'s easy. Check out the programs in basic.js to see how things work. Questions? Message me on /u/Lutan.');
 }
 
 function wantyougone() {
