@@ -7,8 +7,7 @@ window.registeredcommands=[
 	"fortune",
 	"credits",
 	"wantyougone",
-	"opensource",
-	"killcrt"
+	"opensource"
 ]
 
 window.shortcuts={
@@ -24,75 +23,41 @@ window.consolerunning=false;
 
 window.userinput="";
 
-//Removing the forcelinebreak-div will freeze hell and make the dead walk the earth. You want that? No, you don't. So don't fucking remove this.
 window.consolecontent="GLaDOS v1.09 (c) 1982 Aperture Science, Inc<br>\
 ";
-window.cursorpos=0;
 window.consoleurl="<br>Lutan@GLaDOS:~$ ";
 window.commandhistory=[""];
 window.currentcommand=0;
 $(function() {
+	$(document).click(function() {
+		$("#userinputworkaround").focus()
+	});
+	$("#userinputworkaround").focus();
+	
 	$(window).on("keydown",function(e) {
-		if (window.consolerunning || e.which == 0 || e.ctrlKey || e.metaKey || e.altKey) {
+		if (window.consolerunning) {
+			$("#userinputworkaround").val("");
+			window.userinput="";
 			return;
 		}
-		
-		if (e.key.length==1) {
-			e.preventDefault();
-			e.stopPropagation();
-			temp=window.userinput;
-			window.userinput=temp.substr(0,window.cursorpos)+e.key+temp.substr(window.cursorpos);
-			window.cursorpos++;
-			//WORKS
-		} else if (e.key=="Backspace") {
-			e.preventDefault();
-			e.stopPropagation();
-			temp=window.userinput;
-			window.userinput = temp.substr(0,window.cursorpos-1)+temp.substr(window.cursorpos);
-			window.cursorpos = window.cursorpos > 0 ? window.cursorpos - 1 : 0;
-			//WORKS
-		} else if (e.key=="Delete") {
-			e.preventDefault();
-			e.stopPropagation();
-			temp=window.userinput;
-			window.userinput = temp.substr(0,window.cursorpos)+temp.substr(window.cursorpos+1);
-			if (window.cursorpos > window.userinput.length) {
-				window.cursorpos = window.userinput.length;
+		setTimeout(function() {
+			window.userinput=$("#userinputworkaround").val();
+			if (e.which==13) {
+				e.preventDefault();
+				e.stopPropagation();
+				$("#userinputworkaround").val("");
+				runCommand(window.userinput);
+			} else if (e.which==38) {
+				e.preventDefault();
+				e.stopPropagation();
+				oneCommandBack();
+			} else if (e.which==40) {
+				e.preventDefault();
+				e.stopPropagation();
+				oneCommandForward();
 			}
-			//WORKS
-		} else if (e.key=="Enter") {
-			e.preventDefault();
-			e.stopPropagation();
-			runCommand(window.userinput);
-			//WORKS
-		} else if (e.key=="ArrowLeft") {
-			e.preventDefault();
-			e.stopPropagation();
-			moveCursorLeft();
-			//WORKS
-		} else if (e.key=="ArrowUp") {
-			e.preventDefault();
-			e.stopPropagation();
-			oneCommandBack();
-			//WORKS
-		} else if (e.key=="ArrowRight") {
-			e.preventDefault();
-			e.stopPropagation();
-			moveCursorRight();
-			//WORKS
-		} else if (e.key=="ArrowDown") {
-			e.preventDefault();
-			e.stopPropagation();
-			oneCommandForward();
-			//WORKS
-		} else if (e.key=="Home") {
-			window.cursorpos=0;
-		} else if (e.key=="End") {
-			window.cursorpos=window.userinput.length;
-		} else {
-			console.log(e.key);
-		}
-		updateConsole();
+			updateConsole();
+		},50);
 	});
 	updateConsole();
 });
@@ -100,13 +65,13 @@ $(function() {
 function oneCommandBack() {
 	window.currentcommand = window.currentcommand > 0 ? window.currentcommand - 1 : 0;
 	window.userinput=window.commandhistory[window.currentcommand];
-	window.cursorpos=window.userinput.length;
+	$("#userinputworkaround").val(window.userinput);
 }
 
 function oneCommandForward() {
 	window.currentcommand = window.currentcommand < window.commandhistory.length - 1 ? window.currentcommand + 1 : window.commandhistory.length - 1;
 	window.userinput=window.commandhistory[window.currentcommand];
-	window.cursorpos=window.userinput.length;
+	$("#userinputworkaround").val(window.userinput);
 }
 
 function spanify(str) {
@@ -128,16 +93,9 @@ function cc() {	//close console
 	updateConsole();
 }
 
-function moveCursorLeft() {
-	window.cursorpos = window.cursorpos > 0 ? window.cursorpos - 1 : 0;
-}
-
-function moveCursorRight() {
-	temp=window.userinput.length;
-	window.cursorpos = window.cursorpos < temp ? window.cursorpos + 1 : temp;
-}
-
 function updateConsole() {
+	//Removing the forcelinebreak-div will freeze hell and make the dead walk the earth. You want that? No, you don't. So don't fucking remove this.
+	var cursorpos=doGetCaretPosition(document.getElementById("userinputworkaround"));
 	if (window.consolerunning) {
 		$("#console_primary_content").html("<div id=forcelinebreak></div>"+window.consolecontent+"<span id=userinput><span>&nbsp;</span></span>");
 		$("#userinput > span").removeClass("mark");
@@ -145,7 +103,7 @@ function updateConsole() {
 	} else {
 		$("#console_primary_content").html("<div id=forcelinebreak></div>"+window.consolecontent+window.consoleurl+"<div id=forcelinebreak></div><span id=userinput>"+spanify(window.userinput)+"<span>&nbsp;</span></span>");
 		$("#userinput > span").removeClass("mark");
-		$("#userinput > span:nth-child("+(window.cursorpos+1)+")").addClass("mark");
+		$("#userinput > span:nth-child("+(cursorpos+1)+")").addClass("mark");
 	}
 }
 
@@ -165,7 +123,6 @@ function runCommand(command) {
 	
 	if (window.registeredcommands.indexOf(cmd)==-1) {
 		window.userinput="";
-		window.cursorpos=0;
 		window.commandhistory[window.commandhistory.length-1]=command;
 		window.commandhistory.push("");
 		window.currentcommand=window.commandhistory.length - 1;
@@ -173,7 +130,6 @@ function runCommand(command) {
 		return;
 	}
 	window.userinput="";
-	window.cursorpos=0;
 	window.commandhistory[window.commandhistory.length-1]=command;
 	window.commandhistory.push("");
 	window.currentcommand=window.commandhistory.length - 1;

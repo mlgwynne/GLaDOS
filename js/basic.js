@@ -5,8 +5,8 @@ function help(argv) {
 		println("reddit      [r] - Browse Reddit");
 		println("4chan       [4] - Browse 4chan");
 		println("google      [g] - Search on Google");
-		println("killcrt         - Removes the CRT Lines. To undo it, press F5");
 		println("wantyougone     - It's always such a pleasure.");
+		println("opensource      - This project is available at Github");
 		println("credits         - Prints the credits");
 		println("exit            - Exit");
 		return;
@@ -43,10 +43,6 @@ function help(argv) {
 			throwerror();
 			break;
 	}
-}
-
-function killcrt() {
-	$("#scanlines").remove();
 }
 
 function opensource() {
@@ -246,4 +242,10 @@ function google(argv) {
 
 function exit() {
 	window.close();
+}
+
+function credits() {
+	println('Made by <a href="http://www.reddit.com/u/Lutan" target=_blank>Lutan</a>.');
+	println();
+	println('Special thanks to my coffee machine.');
 }

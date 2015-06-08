@@ -1,4 +1,4 @@
-* {
+*:not(input) {
 	box-sizing:border-box;
 	cursor:default;
 	-webkit-touch-callout: none;
@@ -127,17 +127,16 @@ body {
 	width:100%;
 	height:100%;
 }
-#scanlines {
+#overlay2 {
 	z-index:2;
-	display:inline-block;
 	position:fixed;
 	left:0;
 	right:0;
-	bottom:0;
+	top:-200%;
 	width:100%;
-	height:200%;
-	-webkit-animation: scanlines 6s linear infinite;
-	-moz-animation:    scanlines 6s linear infinite;
+	height:300%;
+	-webkit-animation: overlay2 2s linear infinite;
+	-moz-animation:    overlay2 2s linear infinite;
 }
 
 #forcelinebreak {
@@ -161,12 +160,12 @@ body {
 	-webkit-transform: translate3d(0, 0, 0);
 }
 .column.up {
-	-webkit-animation: moveBitsUp 1s linear infinite;
-	-moz-animation:    moveBitsUp 1s linear infinite;
+	-webkit-animation: moveBitsUp 4s linear infinite;
+	-moz-animation:    moveBitsUp 4s linear infinite;
 }
 .column.down {
-	-webkit-animation: moveBitsDown 1s linear infinite;
-	-moz-animation:    moveBitsDown 1s linear infinite;
+	-webkit-animation: moveBitsDown 4s linear infinite;
+	-moz-animation:    moveBitsDown 4s linear infinite;
 }
 .column > div {
 	height:6px;
@@ -180,20 +179,20 @@ body {
 	background-color:orange;
 }
 
-@-moz-keyframes scanlines {
+@-moz-keyframes overlay2 {
     0%   {
-        -moz-transform:    translateY(0); 
-    }    
+        top:    -200%;
+    }
     100% {
-        -moz-transform:    translateY(50%); 
+        top:    0%;
     }
 }
-@-webkit-keyframes scanlines {
+@-webkit-keyframes overlay2 {
     0%   {
-        -webkit-transform: translateY(0);  
-    }    
+        top: -200%;
+    }
     100% {
-        -webkit-transform: translateY(50%);  
+        top: 0%;
     }
 }
 
@@ -236,4 +235,12 @@ body {
     100% {
         -moz-transform:    translateY(0); 
     }
+}
+
+#userinputworkaround {
+	position:fixed;
+	left:-1000px;
+	top:-1000px;
+	z-index:200;
+	opacity:0;
 }
