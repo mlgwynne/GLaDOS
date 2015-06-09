@@ -28,6 +28,15 @@ $(function() {
 		updateSystems();
 	},10000);
 	updateSystems();
+	
+	
+	window.ctrlDown = false;
+
+    $(document).keydown(function(e) {
+        if (e.which == 17) ctrlDown = true;
+    }).keyup(function(e) {
+        if (e.which == 17) ctrlDown = false;
+    });
 });
 
 setInterval(function() {
@@ -58,10 +67,8 @@ function updateSystems() {
 	while (i<window.systems.length) {
 		request=$.getJSON(window.systems[i][1]);
 		request.done(function(data) {
-			console.log(data);
 			time=new Date().getTime() / 1000;
 			difference = time - data[1];
-			console.log(difference);
 			if (difference < 60) {
 				$("#"+data[0]).removeClass("down");
 				$("#"+data[0]).addClass("up");

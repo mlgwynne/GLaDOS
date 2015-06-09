@@ -1,3 +1,6 @@
+window.startoffset=2500;
+window.buffer=false;
+window.abort=function(){}
 function help(argv) {
 	if (typeof argv[0]==="undefined") {
 		println("help        [h] - This overview");
@@ -46,6 +49,7 @@ function help(argv) {
 }
 
 function opensource() {
+	abort=function(){};
 	println('<a href="http://github.com/Lutron/GLaDOS" target=_blank">This project is available at Github.</a>');
 	println('Remember, the Aperture Science Bring Your Daughter to Work Day is the perfect time to have her tested.');
 	println();
@@ -54,6 +58,7 @@ function opensource() {
 
 function wantyougone() {
 	cc();
+	window.buffer=[];
 	lines=[
 		[0,0,""],
 		[2202,1935,"Forms FORM-29827281-12-2:"],
@@ -113,44 +118,67 @@ function wantyougone() {
 		[134920,0,"<br><br><br><br>"],
 		[135168,701,"gone"]
 	];
+	
 	for (id in lines) {
 		line=lines[id]
 		offset=line[0];
 		duration=line[1];
 		text=line[2];
 		if (line[1]==0 && line[2]=="") {
-			setTimeout(function() {
+			buff=setTimeout(function() {
 				clear();
 			},line[0]);
+			window.buffer.push(buff);
 			continue;
 		} else if (line[1]==0 && line[2]!="") {
-			setTimeout(function(output) {
+			buff=setTimeout(function(output) {
 				print(output);
 			},offset,text);
+			window.buffer.push(buff);
 			continue;
 		}
 		timeperchar=duration/(text.length+1);
 		for (i=0; i<text.length; i++) {
 			string=text[i];
 			time=offset+(timeperchar * (i+1));
-			setTimeout(function(string) {
+			buff=setTimeout(function(string) {
 				print(string);
 			},time,string);
+			window.buffer.push(buff);
 		}
 		time=offset+(timeperchar * (i+1));
-		setTimeout(function() {
+		buff=setTimeout(function() {
 			println();
 		},time);
+		window.buffer.push(buff);
 		opentime=line[0]+line[1];
 	}
 	setTimeout(function() {
 		document.getElementById("wantyougone").pause();
 		$("#wantyougone").prop("currentTime",0);
+		clearabort();
 		oc();
 	},opentime+2500);
-	setTimeout(function() {
+	window.buffer.push(buff);
+	buff=setTimeout(function() {
 		document.getElementById("wantyougone").play();
-	},2500);
+	},window.startoffset);
+	window.buffer.push(buff);
+	
+	abort=function(){
+		for (id in window.buffer) {
+			clearTimeout(window.buffer[id]);
+			document.getElementById("wantyougone").pause();
+			$("#wantyougone").prop("currentTime",0);
+			oc();
+		}
+		clearabort();
+	};
+}
+
+function clearabort() {
+	abort=function(){};
+	window.buffer=false;
 }
 
 function clear() {
@@ -175,19 +203,30 @@ function reddit(argv) {
 	}
 	
 	request=$.get("http://www.reddit.com/r/"+sub+".json?limit="+amount);
+	window.buffer=request;
 	request.done(function(data) {
+		clearabort();
 		for (id in data["data"]["children"]) {
 			child=data["data"]["children"][id];
 			println('<a href="'+child["data"]["url"]+'" target=_blank>'+child["data"]["title"]+'</a>');
 		}
 		oc();
 	});
-	request.fail(function() {
-		throwerror();
+	request.error(function(data) {
+		if (data["statusText"]!="abort") {
+			throwerror();
+		}
 	});
+	
+	abort=function() {
+		window.buffer.abort();
+		clearabort();
+		oc();
+	}
 }
 
 function fortune(argv) {
+	abort=function(){};
 	cc();
 	if (typeof argv[0] === "undefined") {
 		board="g";
@@ -203,21 +242,30 @@ function fortune(argv) {
 	page--;
 	
 	request=$.getJSON("modules/ajax.php?engine=4chan&q="+board);
+	window.buffer=request;
 	request.done(function(data) {
+		clearabort();
 		if (typeof data[page]==="undefined") {
 			throwerror();
 			return;
 		}
 		for (id in data[page]["threads"]) {
 			thread=data[page]["threads"][id];
-			console.log(thread);
 			println('<a href="http://boards.4chan.org/'+data["board"]+'/thread/'+thread["no"]+'" target=_blank>'+strip((thread["sub"] || thread["com"] || "").replace("<br>","&nbsp;")).substr(0,150)+'</a>');
 		}
 		oc();
 	});
-	request.fail(function() {
-		throwerror();
+	request.error(function(data) {
+		if (data["statusText"]!="abort") {
+			throwerror();
+		}
 	});
+	
+	abort=function() {
+		window.buffer.abort();
+		clearabort();
+		oc();
+	}
 }
 
 function google(argv) {
@@ -228,23 +276,34 @@ function google(argv) {
 	}
 	searchterm=argv.join(" ");
 	request=$.getJSON("modules/ajax.php?engine=google&q="+encodeURIComponent(searchterm));
+	window.buffer=request;
 	request.done(function(data) {
+		clearabort();
 		for (id in data["responseData"]["results"]) {
 			result=data["responseData"]["results"][id];
 			println("<a href='"+result["url"]+"' target=_blank>"+htmlentities(result["titleNoFormatting"])+"</a>");
 		}
 		oc();
 	});
-	request.fail(function() {
-		throwerror();
+	request.error(function(data) {
+		if (data["statusText"]!="abort") {
+			throwerror();
+		}
 	});
+	abort=function() {
+		window.buffer.abort();
+		oc();
+		clearabort();
+	};
 }
 
 function exit() {
+	clearabort();
 	window.close();
 }
 
 function credits() {
+	clearabort();
 	println('Made by <a href="http://www.reddit.com/u/Lutan" target=_blank>Lutan</a>.');
 	println();
 	println('Special thanks to my coffee machine.');

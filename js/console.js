@@ -35,6 +35,11 @@ $(function() {
 	$("#userinputworkaround").focus();
 	
 	$(window).on("keydown",function(e) {
+		
+		if (window.ctrlDown && e.keyCode == 67) {
+			abort();
+			return;
+		}
 		if (window.consolerunning) {
 			$("#userinputworkaround").val("");
 			window.userinput="";
