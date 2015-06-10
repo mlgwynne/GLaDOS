@@ -1,15 +1,37 @@
 $(function() {
 	updateBlocks();
+	
+	//IN PREPARATION FOR A LIST OF THE RUNNING SYSTEMS
 	window.systems=[
-		["Homecomputer","http://www.bloxapi.com/?action=blockModule&subaction=readBlock&strKey=9FSaOHPwp2UtYxuPkWuiBYjr7UZ1CRlwtU9H9nNBmSlQQHeXlqJPZ9cYVf4wybsp"],
-		["NAS","http://www.bloxapi.com/?action=blockModule&subaction=readBlock&strKey=VLYaypfaUMsAow9vXV29C0dMNuUR5XNWdEDxFzagGpukkLdOSgR4tcvtqrJ9rGsr"],
+		["Courage",""],
+		["is",""],
+		["Not",""],
+		["the",""],
+		["Abscence",""],
+		["of",""],
+		["Fear",""],
+		["A",""],
+		["Trusted",""],
+		["Friend",""],
+		["in",""],
+		["Science",""],
 	];
 	
 	var systemsdevices="";
 	var i=0;
 	while (i<window.systems.length) {
+		//ONLY TILL I HAVE THE SYSTEM STATS
+		direction="up";
+		flo="right";
+		if (i<6) {
+			direction="down";
+			flo="left";
+		}
+		systemsdevices+='<div id="'+window.systems[i][0]+'" class="column '+direction+'" style="float:'+flo+';">';
+		//END FILLER
+		
 		var bittybits=stringToBits(window.systems[i][0]);
-		systemsdevices+='<div id="'+window.systems[i][0]+'" class="column">';
+		//systemsdevices+='<div id="'+window.systems[i][0]+'" class="column" style="float:'+flo+';">';
 		var bits="";
 		var j=0;
 		while (j<bittybits.length) {
@@ -24,11 +46,14 @@ $(function() {
 		i++;
 	}
 	$("#systems").html(systemsdevices);
+	
+	//NOT NECESSARY YET
+	/*
 	setInterval(function() {
 		updateSystems();
 	},10000);
 	updateSystems();
-	
+	*/
 	
 	window.ctrlDown = false;
 

@@ -115,6 +115,7 @@ body {
 	background-color:#B5750E;
 	font-size:0;
 	overflow:hidden;
+	padding:0 7px;
 }
 
 #overlay {
@@ -156,7 +157,7 @@ body {
 	float:right;
 	display:inline-block;
 	width:14px;
-	margin-right:14px;
+	margin:0 7px;
 	-webkit-transform: translate3d(0, 0, 0);
 }
 .column.up {
