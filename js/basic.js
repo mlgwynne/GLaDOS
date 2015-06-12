@@ -153,13 +153,15 @@ function wantyougone() {
 		window.buffer.push(buff);
 		opentime=line[0]+line[1];
 	}
-	setTimeout(function() {
+	
+	buff=setTimeout(function() {
 		document.getElementById("wantyougone").pause();
 		$("#wantyougone").prop("currentTime",0);
 		clearabort();
 		oc();
 	},opentime+2500);
 	window.buffer.push(buff);
+	
 	buff=setTimeout(function() {
 		document.getElementById("wantyougone").play();
 	},window.startoffset);

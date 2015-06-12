@@ -160,6 +160,7 @@ body {
 	height:300%;
 	-webkit-animation: overlay2 2s linear infinite;
 	-moz-animation:    overlay2 2s linear infinite;
+	animation:    	   overlay2 2s linear infinite;
 }
 
 #forcelinebreak {
@@ -183,16 +184,18 @@ body {
 	-webkit-transform: translate3d(0, 0, 0);
 }
 .column.up {
-	-webkit-animation: moveBitsUp 4s linear infinite;
-	-moz-animation:    moveBitsUp 4s linear infinite;
+	-webkit-animation:  moveBitsUp 4s linear infinite;
+	-moz-animation:     moveBitsUp 4s linear infinite;
+	animation:    		moveBitsUp 4s linear infinite;
 }
 .column.down {
-	-webkit-animation: moveBitsDown 4s linear infinite;
-	-moz-animation:    moveBitsDown 4s linear infinite;
+	-webkit-animation:  moveBitsDown 4s linear infinite;
+	-moz-animation:     moveBitsDown 4s linear infinite;
+	animation:    		moveBitsDown 4s linear infinite;
 }
 .column > div {
 	height:6px;
-	width:100%;
+	width:14px;
 	margin-bottom:6px;
 }
 .column > .zero {
@@ -218,6 +221,14 @@ body {
         top: 0%;
     }
 }
+@keyframes overlay2 {
+    0%   {
+        top: -200%;
+    }
+    100% {
+        top: 0%;
+    }
+}
 
 @-moz-keyframes moveBitsUp {
     0%   {
@@ -235,14 +246,15 @@ body {
         -webkit-transform: translateY(-50%);  
     }
 }
-@-moz-keyframes moveBitsUp {
+@keyframes moveBitsUp {
     0%   {
-        -moz-transform:    translateY(-25%); 
+        transform: translateY(-25%);  
     }    
     100% {
-        -moz-transform:    translateY(-50%); 
+        transform: translateY(-50%);  
     }
 }
+
 @-webkit-keyframes moveBitsDown {
     0%   {
         -webkit-transform: translateY(-25%);  
@@ -257,6 +269,14 @@ body {
     }    
     100% {
         -moz-transform:    translateY(0); 
+    }
+}
+@keyframes moveBitsDown {
+    0%   {
+        transform: translateY(-25%);  
+    }    
+    100% {
+        transform: translateY(0);  
     }
 }
 
