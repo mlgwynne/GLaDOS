@@ -7,7 +7,7 @@ function help(argv) {
 		println("clear       [c] - Clear the console");
 		println("reddit      [r] - Browse Reddit");
 		println("4chan       [4] - Browse 4chan");
-		println("google      [g] - Search on Google");
+		println("google      [g] - Search on Google [DISABLED]");
 		println("wantyougone     - It's always such a pleasure.");
 		println("opensource      - This project is available at Github");
 		println("credits         - Prints the credits");
@@ -204,7 +204,7 @@ function reddit(argv) {
 		amount=argv[1];
 	}
 	
-	request=$.get("http://www.reddit.com/r/"+sub+".json?limit="+amount);
+	request=$.getJSON("modules/ajax.php?engine=reddit&q="+sub+"&limit="+amount);
 	window.buffer=request;
 	request.done(function(data) {
 		clearabort();
@@ -271,6 +271,8 @@ function fortune(argv) {
 }
 
 function google(argv) {
+	println("Disabled because Google doesn't like one server doing a ton of requests. Sorry.");
+	return;
 	cc();
 	if (typeof argv[0] === "undefined") {
 		throwerror();
