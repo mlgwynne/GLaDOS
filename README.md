@@ -1,7 +1,8 @@
 # GLaDOS
 Portal 2 Credits Scene Console
 
-Check it out on
-http://glados.lutan.systems
+Migrated to
+https://gitlab.com/Lutan/GLaDOS
 
-See http://blog.lutan.systems/glados-interactive-portal-2-credits-console/ for more details about this project
+Live on
+https://glados.lutan.dev/
