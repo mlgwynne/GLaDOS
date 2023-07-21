@@ -25,7 +25,7 @@ window.userinput="";
 
 window.consolecontent="GLaDOS v1.09 (c) 1982 Aperture Science, Inc<br>\
 ";
-window.consoleurl="<br>Lutan@GLaDOS:~$ ";
+window.consoleurl="<br>mlg@GLaDOS:~$ ";
 window.commandhistory=[""];
 window.currentcommand=0;
 $(function() {
